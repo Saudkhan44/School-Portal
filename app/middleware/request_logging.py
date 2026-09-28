@@ -40,13 +40,11 @@ def setup_app_middleware(app: FastAPI) -> None:
     @app.exception_handler(AppException)
     async def app_exception_handler(_: Request, exc: AppException) -> JSONResponse:
         logger.warning(
-            "app_exception",
-            extra={
-                "code": exc.code,
-                "status_code": exc.status_code,
-                "error_detail": exc.message,
-            },
-        )
+        "app_exception code=%s status_code=%s detail=%s",
+        exc.code,
+        exc.status_code,
+        exc.message,
+        )   
         return JSONResponse(
             status_code=exc.status_code,
             content={"detail": exc.message, "code": exc.code},
